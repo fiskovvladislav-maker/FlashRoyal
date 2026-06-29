@@ -3,16 +3,16 @@ using UnityEngine;
 public class SoulCollectible : MonoBehaviour
 {
     [Header("Settings")]
-    public float attractionRadius = 1000f; // Радиус, с которого душа летит к игроку
-    public float attractSpeed = 20f;     // Скорость притягивания
+    public float attractionRadius = 3f; 
+    public float attractSpeed = 6f;     
 
     private Transform _playerTransform;
     private bool _isBeingCollected = false;
 
     private void Start()
     {
-        // Находим игрока один раз при запуске игры
-        _playerTransform = FindObjectOfType<PlayerController>().transform;
+        // ИЗМЕНЕНИЕ: Заменили FindObjectOfType на FindFirstObjectByType
+        _playerTransform = FindAnyObjectByType<PlayerController>().transform;
     }
 
     public void Initialize(Vector2 spawnPos)
@@ -26,11 +26,9 @@ public class SoulCollectible : MonoBehaviour
     {
         if (_playerTransform == null) return;
 
-        float distanceToPlayer = Vector2.Distance(transform.position, _playerTransform.position);
-
         if (!_isBeingCollected)
         {
-            // Если игрок в радиусе притяжения, начинаем лететь к нему
+            float distanceToPlayer = Vector2.Distance(transform.position, _playerTransform.position);
             if (distanceToPlayer <= attractionRadius)
             {
                 _isBeingCollected = true;
@@ -38,22 +36,23 @@ public class SoulCollectible : MonoBehaviour
         }
         else
         {
-            // Плавно летим к игроку
             transform.position = Vector2.MoveTowards(transform.position, _playerTransform.position, attractSpeed * Time.deltaTime);
-
-            // Если долетели до игрока (почти коснулись)
-            if (distanceToPlayer < 2f)
-            {
-                CollectSoul();
-            }
         }
     }
 
-        private void CollectSoul()
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            CollectSoul();
+        }
+    }
+
+    private void CollectSoul()
     {
         if (PlayerStats.Instance != null)
         {
-            PlayerStats.Instance.AddSouls(1); // Одна душа за врага
+            PlayerStats.Instance.AddSouls(1);
         }
         gameObject.SetActive(false);
     }

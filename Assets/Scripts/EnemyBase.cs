@@ -2,39 +2,29 @@ using UnityEngine;
 
 public class EnemyBase : MonoBehaviour
 {
-    public float maxHp = 10f; 
-    public float moveSpeed = 2f; // НОВОЕ: Скорость передвижения врага
-    
+    public EnemyDataSO data; // Ссылка на файл
     private float _currentHp;
-    private Transform _playerTransform; // Чтобы запомнить, куда бежать
+    private float _moveSpeed; // Внутренняя переменная для скорости
+    private Transform _playerTransform;
 
     public void Initialize()
     {
-        _currentHp = maxHp;
+        _currentHp = data.hp;
+        _moveSpeed = data.moveSpeed;
         gameObject.SetActive(true);
-        
-        // Запоминаем позицию игрока при появлении врага
-        if (PlayerStats.Instance != null)
-        {
-            _playerTransform = PlayerStats.Instance.transform;
-        }
+        _playerTransform = PlayerStats.Instance.transform;
     }
 
-    void Update() // НОВЫЙ МЕТОД: Заставляет врага двигаться каждый кадр
+    void Update()
     {
         if (_playerTransform == null) return;
-
-        // Плавно двигаемся в сторону игрока
-        transform.position = Vector2.MoveTowards(transform.position, _playerTransform.position, moveSpeed * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, _playerTransform.position, _moveSpeed * Time.deltaTime);
     }
 
     public void TakeDamage(float damage)
     {
         _currentHp -= damage;
-        if (_currentHp <= 0)
-        {
-            Die();
-        }
+        if (_currentHp <= 0) Die();
     }
 
     private void Die()

@@ -29,8 +29,8 @@ Transform:
   m_GameObject: {fileID: 8585121103947479953}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.65, y: 0.01, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 1}
+  m_LocalPosition: {x: 1.7845, y: -1.8438, z: 0}
+  m_LocalScale: {x: 1.269, y: 1.2925, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -151,7 +151,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -169,5 +169,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b549005547c463a44855cdf73bfdcbab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
-  maxHp: 10
-  moveSpeed: 8
+  data: {fileID: 11400000, guid: 1cfc871c66b8f2f40b6660cdaac3626d, type: 2}

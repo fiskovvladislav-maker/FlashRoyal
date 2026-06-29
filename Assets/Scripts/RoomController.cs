@@ -6,33 +6,33 @@ public enum RoomType { Safe, Fight }
 public class RoomController : MonoBehaviour
 {
     public RoomType roomType;
-    public BoxCollider2D roomBounds; // Коллайдер, определяющий границы комнаты
+    public BoxCollider2D roomBounds;
 
     [Header("Fight Room Settings")]
-    public int enemiesToSpawn = 3; // Врагов в комнате
+    public int enemiesToSpawn = 3;
     public float spawnInterval = 0.5f;
+    
     private int _aliveEnemies = 0;
-    private bool _isRoomActive = false;
+    private bool _hasSpawned = false; // Единственный флаг: спавнили ли мы уже врагов?
 
     [Header("Safe Room Settings")]
-    public GameObject chairObject;    // Кресло (лечение)
-    public GameObject levelUpTable;   // Стол (прокачка)
-
-    public bool isCleared = false;
+    public GameObject chairObject;
+    public GameObject levelUpTable;
 
     private void Start()
     {
         roomBounds.isTrigger = true;
-        if (roomType == RoomType.Safe && chairObject != null)
+        if (roomType == RoomType.Safe)
         {
-            chairObject.SetActive(false);
-            levelUpTable.SetActive(false);
+            if (chairObject != null) chairObject.SetActive(false);
+            if (levelUpTable != null) levelUpTable.SetActive(false);
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player") && !isCleared)
+        // Если вошел игрок, И мы еще не спавнили врагов -> активируем комнату
+        if (other.CompareTag("Player") && !_hasSpawned)
         {
             ActivateRoom();
         }
@@ -40,7 +40,7 @@ public class RoomController : MonoBehaviour
 
     private void ActivateRoom()
     {
-        _isRoomActive = true;
+        _hasSpawned = true; // Отмечаем, что комната активирована
 
         if (roomType == RoomType.Fight)
         {
@@ -50,7 +50,7 @@ public class RoomController : MonoBehaviour
         {
             if (chairObject != null) chairObject.SetActive(true);
             if (levelUpTable != null) levelUpTable.SetActive(true);
-            Debug.Log("Вы в безопасной комнате. Можно подлечиться!");
+            Debug.Log("Вы в безопасной комнате.");
         }
     }
 
@@ -59,27 +59,21 @@ public class RoomController : MonoBehaviour
         for (int i = 0; i < enemiesToSpawn; i++)
         {
             Vector2 spawnPos = GetRandomPointInBounds();
-            // Передаем саму комнату (this.transform) как родителя
             PoolManager.Instance.SpawnEnemy(spawnPos, this.transform);
             _aliveEnemies++;
             yield return new WaitForSeconds(spawnInterval);
         }
     }
 
+    // Этот метод вызывается скриптом EnemyBase, когда враг умирает
     public void EnemyDied()
     {
         _aliveEnemies--;
-        if (_aliveEnemies <= 0 && _isRoomActive)
+        if (_aliveEnemies <= 0)
         {
-            ClearRoom();
+            Debug.Log("Комната зачищена!");
+            // Здесь можно разблокировать двери, если они будут нужны
         }
-    }
-
-    private void ClearRoom()
-    {
-        isCleared = true;
-        _isRoomActive = false;
-        Debug.Log("Комната очищена!");
     }
 
     private Vector2 GetRandomPointInBounds()
