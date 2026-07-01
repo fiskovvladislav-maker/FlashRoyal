@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Slime
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDataSO
   hp: 5
-  moveSpeed: 8
+  moveSpeed: 2
   soulReward: 1

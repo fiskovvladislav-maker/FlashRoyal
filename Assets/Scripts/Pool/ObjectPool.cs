@@ -30,7 +30,6 @@ public class ObjectPool<T> where T : MonoBehaviour
         }
         else
         {
-            // Если объекты кончились - до-создаем один (автомасштабирование)
             return Object.Instantiate(_prefab, _parent);
         }
     }

@@ -11,7 +11,6 @@ public class SoulCollectible : MonoBehaviour
 
     private void Start()
     {
-        // ИЗМЕНЕНИЕ: Заменили FindObjectOfType на FindFirstObjectByType
         _playerTransform = FindAnyObjectByType<PlayerController>().transform;
     }
 

@@ -149,7 +149,6 @@ GameObject:
   - component: {fileID: 1713562104223400756}
   - component: {fileID: 9010558808249439284}
   - component: {fileID: 2939440226696891457}
-  - component: {fileID: 7972451107621466337}
   m_Layer: 5
   m_Name: CardButton
   m_TagString: Untagged
@@ -260,21 +259,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &7972451107621466337
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4814292793058940565}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c995ef252ed46e240a9c0c50ccce60ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CardButtonUI
-  button: {fileID: 2939440226696891457}
-  titleText: {fileID: 6133699426604485937}
-  descriptionText: {fileID: 6131748209124369898}
 --- !u!1 &6093781449184674659
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,12 +5,12 @@ public class Projectile : MonoBehaviour
     public float speed = 8f; 
     
     private Vector2 _direction; 
-    private float _damage; // Урон теперь переменная, а не константа
+    private float _damage;
 
     public void Initialize(Vector2 direction)
     {
         _direction = direction;
-        _damage = PlayerStats.Instance.damage; // Берем текущий урон из статов!
+        _damage = PlayerStats.Instance.damage;
         gameObject.SetActive(true);
     }
 

@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 using System.Collections.Generic;
 
 public class LevelUpManager : MonoBehaviour
@@ -15,11 +17,7 @@ public class LevelUpManager : MonoBehaviour
 
     private bool _isLevelingUp = false;
 
-    void Awake() 
-    { 
-        Instance = this; 
-        if (uiPanel != null) uiPanel.SetActive(false);
-    }
+    void Awake() { Instance = this; uiPanel.SetActive(false); }
 
     public void OpenLevelUpUI()
     {
@@ -27,14 +25,23 @@ public class LevelUpManager : MonoBehaviour
         _isLevelingUp = true;
         uiPanel.SetActive(true);
 
+        // Очищаем старые кнопки
         foreach (Transform child in cardButtonContainer) Destroy(child.gameObject);
 
+        // Выбираем 3 случайные карты
         List<CardDataSO> chosenCards = GetRandomCards(3);
 
+        // Создаем кнопки
         foreach (var card in chosenCards)
         {
             GameObject newButton = Instantiate(cardButtonPrefab, cardButtonContainer);
-            newButton.GetComponent<CardButtonUI>().Setup(card, this);
+            // Меняем текст карты
+            newButton.GetComponentInChildren<TextMeshProUGUI>().text = card.cardName;
+            
+            // Прямо здесь вешаем событие нажатия без отдельного скрипта!
+            newButton.GetComponent<Button>().onClick.AddListener(() => {
+                ApplyCard(card);
+            });
         }
     }
 
@@ -54,7 +61,6 @@ public class LevelUpManager : MonoBehaviour
 
     public void ApplyCard(CardDataSO selectedCard)
     {
-        Debug.Log($"Игрок выбрал карту: {selectedCard.cardName}!");
         PlayerStats stats = PlayerStats.Instance;
         if (stats != null) stats.LevelUp();
         ApplyEffectToPlayer(selectedCard);
@@ -64,30 +70,18 @@ public class LevelUpManager : MonoBehaviour
 
     private void ApplyEffectToPlayer(CardDataSO card)
     {
-        // ИЗМЕНЕНИЕ ЗДЕСЬ: FindAnyObjectByType вместо FindFirstObjectByType
         PlayerController controller = FindAnyObjectByType<PlayerController>();
         PlayerStats stats = PlayerStats.Instance;
-
         if (controller == null || stats == null) return;
 
         switch (card.effectType)
         {
-            case CardEffectType.DamageUp:
-                stats.damage += card.value;
-                Debug.Log($"Урон увеличен на {card.value}");
-                break;
-            case CardEffectType.MoveSpeedUp:
-                controller.speed += card.value;
-                Debug.Log($"Скорость движения увеличена на {card.value}");
-                break;
-            case CardEffectType.FireRateUp:
-                stats.fireRate -= card.value;
-                Debug.Log($"Скорострельность увеличена");
-                break;
-            case CardEffectType.MaxHealthUp:
-                stats.maxHealth += card.value;
-                stats.currentHealth += card.value;
-                Debug.Log($"Макс. здоровье увеличено до {stats.maxHealth}");
+            case CardEffectType.DamageUp: stats.damage += card.value; break;
+            case CardEffectType.MoveSpeedUp: controller.speed += card.value; break;
+            case CardEffectType.FireRateUp: stats.fireRate = Mathf.Max(0.05f, stats.fireRate - card.value); break;
+            case CardEffectType.MaxHealthUp: 
+                stats.maxHealth += card.value; 
+                stats.currentHealth += card.value; 
                 break;
         }
     }

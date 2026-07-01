@@ -28,14 +28,12 @@ public class PoolManager : MonoBehaviour
         if (soulPrefab != null) _soulPool = new ObjectPool<SoulCollectible>(soulPrefab.GetComponent<SoulCollectible>(), soulPoolSize, transform);
     }
 
-        // Было: public void SpawnEnemy(Vector2 position)
-    // Стало:
     public void SpawnEnemy(Vector2 position, Transform parent)
     {
         if (_enemyPool == null) return;
         EnemyBase enemy = _enemyPool.Get();
         enemy.transform.position = position;
-        enemy.transform.SetParent(parent); // Делаем врага дочерним элементом комнаты
+        enemy.transform.SetParent(parent); 
         enemy.Initialize();
     }
     public void ReturnEnemy(EnemyBase enemy) => _enemyPool?.ReturnToPool(enemy);
