@@ -1310,7 +1310,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
   maxHealth: 100
   currentHealth: 0
-  damage: 5
+  damage: 8
   fireRate: 0.7
   currentLevel: 1
   currentSouls: 0
@@ -1361,7 +1361,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PoolManager
   enemyPrefab: {fileID: 8585121103947479953, guid: d5900d5434642754cb48bac725dc5014, type: 3}
-  enemyPoolSize: 100
+  enemyPoolSize: 150
   bulletPrefab: {fileID: 5712839194032323009, guid: 919aaa92fe38a0c4e8d4bbf07ac8bdee, type: 3}
   bulletPoolSize: 100
   soulPrefab: {fileID: 4995616130841202346, guid: 0c6eafb842819694398a19b27f487580, type: 3}
@@ -5526,7 +5526,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RoomController
   roomType: 1
   roomBounds: {fileID: 931531669}
-  enemiesToSpawn: 100
+  enemiesToSpawn: 150
   spawnInterval: 0.3
   chairObject: {fileID: 0}
   levelUpTable: {fileID: 0}

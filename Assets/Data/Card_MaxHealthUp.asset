@@ -15,4 +15,4 @@ MonoBehaviour:
   cardName: "\u0422\u0443\u0437 \u0427\u0435\u0440\u0432\u0438"
   icon: {fileID: 0}
   effectType: 4
-  value: 10
+  value: 100

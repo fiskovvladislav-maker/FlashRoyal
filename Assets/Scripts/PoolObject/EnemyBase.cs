@@ -2,22 +2,32 @@ using UnityEngine;
 
 public class EnemyBase : MonoBehaviour
 {
-    public float maxHp = 10f; 
-    public float moveSpeed = 2f;
+    public EnemyDataSO data; 
+
     private float _currentHp;
+    private float _moveSpeed; 
     private Transform _playerTransform;
 
     public void Initialize()
     {
-        _currentHp = maxHp;
+        if (data == null)
+        {
+            Debug.LogError("На враге не назначен EnemyDataSO! Проверьте префаб.");
+            return;
+        }
+
+        _currentHp = data.hp;
+        _moveSpeed = data.moveSpeed;
+
         gameObject.SetActive(true);
-        if (PlayerStats.Instance != null) _playerTransform = PlayerStats.Instance.transform;
+        if (PlayerStats.Instance != null) 
+            _playerTransform = PlayerStats.Instance.transform;
     }
 
     void Update()
     {
         if (_playerTransform == null) return;
-        transform.position = Vector2.MoveTowards(transform.position, _playerTransform.position, moveSpeed * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, _playerTransform.position, _moveSpeed * Time.deltaTime);
     }
 
     public void TakeDamage(float damage)

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -27,7 +28,6 @@ public class PlayerStats : MonoBehaviour
         OnLevelChanged?.Invoke();
     }
 
-    public void TakeDamage(float amount) { currentHealth -= amount; OnHealthChanged?.Invoke(); }
     public void Heal(float amount) { currentHealth = Mathf.Min(currentHealth + amount, maxHealth); OnHealthChanged?.Invoke(); }
     public void AddSouls(int amount)
     {
@@ -42,5 +42,19 @@ public class PlayerStats : MonoBehaviour
         soulsToNextLevel = Mathf.RoundToInt(soulsToNextLevel * 1.5f);
         OnSoulsChanged?.Invoke();
         OnLevelChanged?.Invoke();
+    }
+
+    public void TakeDamage(float amount)
+    {
+        if (currentHealth <= 0) return; 
+
+        currentHealth -= amount;
+        OnHealthChanged?.Invoke();
+
+        if (currentHealth <= 0)
+        {
+            currentHealth = 0;
+            UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+        }
     }
 }

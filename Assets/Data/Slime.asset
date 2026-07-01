@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60fdab51b3958054e864c76abe2730b4, type: 3}
   m_Name: Slime
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDataSO
-  hp: 5
-  moveSpeed: 2
+  hp: 10
+  moveSpeed: 12
   soulReward: 1
